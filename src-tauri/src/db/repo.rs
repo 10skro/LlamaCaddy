@@ -108,8 +108,8 @@ pub fn insert_download(conn: &Connection, download: &DownloadRecord) -> Result<i
             download.build_number,
             download.download_url,
             download.file_path,
-            download.total_size,
-            download.downloaded_size,
+            download.total_size as i64,
+            download.downloaded_size as i64,
             download.status,
             download.error_message,
             download.created_at,
@@ -128,7 +128,7 @@ pub fn update_download_progress(
     let now = Local::now().to_rfc3339();
     conn.execute(
         "UPDATE downloads SET downloaded_size = ?1, status = ?2, updated_at = ?3 WHERE id = ?4",
-        params![downloaded, status, now, id],
+        params![downloaded as i64, status, now, id],
     )?;
     Ok(())
 }
@@ -168,8 +168,8 @@ pub fn get_download(conn: &Connection, id: i64) -> Result<Option<DownloadRecord>
             build_number: row.get(1)?,
             download_url: row.get(2)?,
             file_path: row.get(3)?,
-            total_size: row.get(4)?,
-            downloaded_size: row.get(5)?,
+            total_size: row.get::<_, i64>(4)? as u64,
+            downloaded_size: row.get::<_, i64>(5)? as u64,
             status: row.get(6)?,
             error_message: row.get(7)?,
             created_at: row.get(8)?,
