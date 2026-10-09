@@ -54,8 +54,6 @@ export const rosepineDawn: Theme = {
     '--input': '257 16% 61%',
     '--ring': hexToHSL(rosepineDawnColors.pine),
     '--sidebar': hexToHSL(rosepineDawnColors['highlight-med']),
-    // Popover/dropdown background alpha (light: translucent text-on-text is unreadable)
-    '--popover-alpha': '1',
     // Rosé Pine Dawn native colors as CSS variables
     '--love': hexToHSL(rosepineDawnColors.love),
     '--gold': hexToHSL(rosepineDawnColors.gold),

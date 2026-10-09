@@ -64,8 +64,6 @@ export const catppuccinMocha: Theme = {
     '--input': hexToHSL(catppuccinMochaColors.surface1),
     '--ring': hexToHSL(catppuccinMochaColors.blue),
     '--sidebar': hexToHSL(catppuccinMochaColors.crust),
-    // Popover/dropdown background alpha (dark: translucent + blur is readable)
-    '--popover-alpha': '0.85',
     // Catppuccin native colors as CSS variables
     '--rosewater': hexToHSL(catppuccinMochaColors.rosewater),
     '--flamingo': hexToHSL(catppuccinMochaColors.flamingo),
