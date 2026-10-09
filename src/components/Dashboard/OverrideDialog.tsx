@@ -54,16 +54,16 @@ function parentDir(p: string): string {
   return p.replace(/[\\/]+[^\\/]*$/, '').toLowerCase();
 }
 
-/** Muted palette cycled per folder group so adjacent groups are visually
- *  distinct without being loud: colored header + matching left accent on the
- *  group's rows. Tailwind classes must be literal strings. */
+/** Muted palette cycled per folder group: only the header row is colored —
+ *  it acts as a separator band between folders. Rows stay neutral.
+ *  Tailwind classes must be literal strings. */
 const GROUP_COLORS = [
-  { header: 'text-violet-300', row: 'border-l-2 border-l-violet-400/60' },
-  { header: 'text-sky-300', row: 'border-l-2 border-l-sky-400/60' },
-  { header: 'text-emerald-300', row: 'border-l-2 border-l-emerald-400/60' },
-  { header: 'text-amber-300', row: 'border-l-2 border-l-amber-400/60' },
-  { header: 'text-rose-300', row: 'border-l-2 border-l-rose-400/60' },
-  { header: 'text-cyan-300', row: 'border-l-2 border-l-cyan-400/60' },
+  'text-violet-300',
+  'text-sky-300',
+  'text-emerald-300',
+  'text-amber-300',
+  'text-rose-300',
+  'text-cyan-300',
 ];
 
 interface OverrideDialogProps {
@@ -332,12 +332,12 @@ export default function OverrideDialog({
             </div>
           ) : (
             groupFilesByFolder(files).map((group, i) => {
-              const color = GROUP_COLORS[i % GROUP_COLORS.length];
+              const headerColor = GROUP_COLORS[i % GROUP_COLORS.length];
               return (
               <SelectGroup key={group.dir || '__root__'}>
                 {group.dir !== '' && (
                   <SelectLabel
-                    className={`flex items-center gap-1.5 text-xs font-semibold ${color.header}`}
+                    className={`flex items-center gap-1.5 text-xs font-semibold ${headerColor} ${i > 0 ? 'border-t border-border/60 mt-1 pt-2' : ''}`}
                   >
                     <FolderOpen className="h-3 w-3" />
                     {group.dir}
@@ -347,7 +347,7 @@ export default function OverrideDialog({
                   <SelectItem
                     key={file.path}
                     value={file.path}
-                    className={`hover:bg-item-highlight/15 focus:bg-item-highlight/15 text-foreground ${group.dir !== '' ? color.row : ''}`}
+                    className="hover:bg-item-highlight/15 focus:bg-item-highlight/15 text-foreground"
                   >
                     <div className="flex items-center gap-2 max-w-full">
                       <span className="truncate flex-1" title={file.path}>
