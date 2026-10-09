@@ -1,0 +1,19 @@
+# Changelog
+
+## Unreleased (prochaine version v0.9.0)
+
+### Nouveautés
+- **Nouveau nom : LlamaCaddy** — l'application s'appelle désormais LlamaCaddy (fenêtre, interface, installeur, dépôt GitHub `10skro/LlamaCaddy`). Vos données sont migrées automatiquement au premier lancement (`%LOCALAPPDATA%\llama-manager` → `%LOCALAPPDATA%\llamacaddy`) : versions installées, configurations et favoris sont conservés.
+
+### Interne
+- Dépendances npm mises à jour (mineures) ; suppression du paquet legacy `tauri` inutilisé (le code passe par `@tauri-apps/api`).
+- Dépendances Rust mises à jour en majeures : rusqlite 0.40 (avec correction des types i64/u64 SQLite), reqwest 0.13, thiserror 2, zip 9 (API `mangled_name`).
+- ESLint reste en v9 : le passage à v10 (règles strictes react-hooks) est reporté à une branche dédiée.
+- Vulnérabilités npm restantes (vitest, tailwindcss, react-router, braces) : corrigées seulement par des mises à jour majeures, planifiées séparément.
+
+### À venir
+- Distribution par npm (`llamacaddy`) à la place de l'installeur `.exe` + updater maison + `latest.json` + GitHub Pages (comme WhisperPro).
+
+## v0.8.0 et antérieurs
+
+Notes générées automatiquement à partir des commits — voir les releases GitHub correspondantes.
