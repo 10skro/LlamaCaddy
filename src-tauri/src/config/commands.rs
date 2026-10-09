@@ -1,7 +1,6 @@
-use tauri::{AppHandle, State};
+use tauri::{AppHandle, Manager, State};
 
 use crate::config::settings::SettingsManager;
-use crate::config::storage::{validate_storage_path, migrate_storage_path, cleanup_old_storage};
 use crate::db::connection::DbManager;
 use crate::db::repo;
 use crate::github::api::GithubClient;
@@ -38,32 +37,42 @@ pub fn open_folder_dialog(app: AppHandle) -> Result<Option<String>, String> {
     Ok(folder.map(|p| p.to_string()))
 }
 
-/// Change the storage path: validate, migrate files, update DB, clean up old path.
+/// Resolve the effective storage directory (configured path, or the app data
+/// directory as fallback). Same resolution as the install/download logic.
 #[tauri::command]
-pub fn change_storage_path(
+pub fn get_storage_path(
+    app: AppHandle,
     state_db: State<'_, DbManager>,
-    old_path: String,
-    new_path: String,
 ) -> Result<String, String> {
-    // 1. Validate the new path
-    validate_storage_path(&new_path, &old_path).map_err(|e| e.to_string())?;
+    let fallback = app
+        .path()
+        .app_local_data_dir()
+        .map_err(|e| e.to_string())?
+        .to_string_lossy()
+        .to_string();
+    Ok(SettingsManager::get_storage_path(&state_db, &fallback))
+}
 
-    // 2. Migrate files from old to new location
-    migrate_storage_path(&old_path, &new_path, &state_db)
-        .map_err(|e| e.to_string())?;
-
-    // 3. Save new path to database (only after successful migration)
-    // Load current settings, update storage_path, save back
-    let mut settings = SettingsManager::get_settings(&state_db)
-        .map_err(|e| format!("Failed to load settings: {}", e))?;
-    settings.storage_path = new_path.clone();
-    SettingsManager::save_settings(&state_db, &settings)
-        .map_err(|e| format!("Failed to save settings: {}", e))?;
-
-    // 4. Clean up old directory
-    cleanup_old_storage(&old_path);
-
-    Ok(new_path)
+/// Open the storage folder in the system file manager.
+#[tauri::command]
+pub fn open_storage_folder(
+    app: AppHandle,
+    state_db: State<'_, DbManager>,
+) -> Result<(), String> {
+    let path = get_storage_path(app, state_db)?;
+    #[cfg(windows)]
+    let opener = "explorer";
+    #[cfg(target_os = "macos")]
+    let opener = "open";
+    #[cfg(all(unix, not(target_os = "macos")))]
+    let opener = "xdg-open";
+    let mut cmd = std::process::Command::new(opener);
+    cmd.arg(&path);
+    // explorer.exe exits with a non-zero status even on success: spawn and ignore.
+    cmd
+        .spawn()
+        .map_err(|e| format!("Failed to open folder {}: {}", path, e))?;
+    Ok(())
 }
 
 /// Save (or clear) the GitHub API token.

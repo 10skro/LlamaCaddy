@@ -41,7 +41,7 @@ export function SettingsPage() {
           </p>
         </div>
 
-        <StorageSection settings={settings} />
+        <StorageSection />
         <ModelsSection settings={settings} updateSetting={updateSetting} />
         <AppearanceSection
           settings={settings}
