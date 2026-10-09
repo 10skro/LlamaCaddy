@@ -237,7 +237,7 @@ export default function OverrideDialog({
         case 'gguf':
         case 'safetensors':
         default:
-          return 'bg-secondary text-muted-foreground border-border';
+          return 'bg-secondary text-foreground border-border';
       }
     },
     []
