@@ -333,16 +333,16 @@ export default function OverrideDialog({
           ) : (
             groupFilesByFolder(files).map((group, i) => {
               const headerColor = GROUP_COLORS[i % GROUP_COLORS.length];
+              const rootName = folder ? folder.replace(/[\\/]+$/, '').split(/[\\/]/).pop() : '';
+              const headerLabel = group.dir !== '' ? group.dir : `${rootName} (root)`;
               return (
               <SelectGroup key={group.dir || '__root__'}>
-                {group.dir !== '' && (
-                  <SelectLabel
-                    className={`flex items-center gap-1.5 text-xs font-semibold text-foreground rounded-sm px-1.5 py-1 ${headerColor} ${i > 0 ? 'mt-1' : ''}`}
-                  >
-                    <FolderOpen className="h-3 w-3" />
-                    {group.dir}
-                  </SelectLabel>
-                )}
+                <SelectLabel
+                  className={`flex items-center gap-1.5 text-xs font-semibold text-foreground rounded-sm px-1.5 py-1 ${headerColor} ${i > 0 ? 'mt-1' : ''}`}
+                >
+                  <FolderOpen className="h-3 w-3" />
+                  {headerLabel}
+                </SelectLabel>
                 {group.files.map((file) => (
                   <SelectItem
                     key={file.path}
