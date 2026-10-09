@@ -110,12 +110,10 @@ export function GeneralSection({ settings, updateSetting }: GeneralSectionProps)
             <HardDrive className="h-3.5 w-3.5 text-muted-foreground" />
             llama.cpp Storage Path
           </Label>
-          <div className="flex gap-2">
-            <Input
-              value={storagePath}
-              readOnly
-              className="bg-background/50 font-mono text-sm cursor-default"
-            />
+          <div className="flex items-center gap-2">
+            <p className="flex-1 min-w-0 truncate rounded-md border border-border/40 bg-transparent px-3 py-2 font-mono text-sm text-muted-foreground select-all">
+              {storagePath}
+            </p>
             <Button
               variant="outline"
               size="icon"
