@@ -32,15 +32,14 @@ export function SettingsPage() {
 
   return (
     <div className="flex h-full overflow-hidden">
-      <div className="flex w-full max-w-4xl mx-auto gap-6 p-6">
-        <SettingsNav active={tab} onSelect={setTab} appVersion={appVersion} />
+      <SettingsNav active={tab} onSelect={setTab} appVersion={appVersion} />
 
-        <div className="flex-1 min-w-0 overflow-y-auto pr-1">
-          <div className="flex flex-col gap-6 pb-6">
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-              <p className="text-muted-foreground mt-1">Configure your LlamaCaddy preferences.</p>
-            </div>
+      <div className="flex-1 min-w-0 overflow-y-auto">
+        <div className="flex flex-col gap-6 p-6 max-w-3xl">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
+            <p className="text-muted-foreground mt-1">Configure your LlamaCaddy preferences.</p>
+          </div>
 
             {tab === 'general' && (
               <GeneralSection settings={settings} updateSetting={updateSetting} />
@@ -60,7 +59,6 @@ export function SettingsPage() {
                 appUpdateLastChecked={appUpdateLastChecked}
               />
             )}
-          </div>
         </div>
       </div>
     </div>

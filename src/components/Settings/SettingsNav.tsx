@@ -20,8 +20,8 @@ interface SettingsNavProps {
  */
 export function SettingsNav({ active, onSelect, appVersion }: SettingsNavProps) {
   return (
-    <nav className="flex flex-col justify-between w-52 shrink-0">
-      <div className="space-y-1">
+    <nav className="flex flex-col justify-between w-56 shrink-0 border-r border-border bg-card/40 p-4">
+      <div className="space-y-1 pt-2">
         {SETTINGS_TABS.map(({ id, label, icon: Icon }) => {
           const isActive = active === id;
           return (
