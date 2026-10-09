@@ -41,24 +41,24 @@ export function SettingsPage() {
             <p className="text-muted-foreground mt-1">Configure your LlamaCaddy preferences.</p>
           </div>
 
-            {tab === 'general' && (
-              <GeneralSection settings={settings} updateSetting={updateSetting} />
-            )}
-            {tab === 'appearance' && (
-              <AppearanceSection
-                settings={settings}
-                updateSetting={updateSetting}
-                activeTheme={activeTheme}
-                setActiveTheme={setActiveTheme}
-              />
-            )}
-            {tab === 'updates' && (
-              <UpdatesSection
-                settings={settings}
-                updateSetting={updateSetting}
-                appUpdateLastChecked={appUpdateLastChecked}
-              />
-            )}
+          {tab === 'general' && (
+            <GeneralSection settings={settings} updateSetting={updateSetting} />
+          )}
+          {tab === 'appearance' && (
+            <AppearanceSection
+              settings={settings}
+              updateSetting={updateSetting}
+              activeTheme={activeTheme}
+              setActiveTheme={setActiveTheme}
+            />
+          )}
+          {tab === 'updates' && (
+            <UpdatesSection
+              settings={settings}
+              updateSetting={updateSetting}
+              appUpdateLastChecked={appUpdateLastChecked}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -83,10 +83,10 @@ export function GeneralSection({ settings, updateSetting }: GeneralSectionProps)
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Model and mmproj files are searched in this folder and its sub-folders,
-            grouped by folder in the file pickers. Recommended layout: one sub-folder
-            per model, with its mmproj file inside — selecting a model then
-            preselects the matching mmproj automatically.
+            Model and mmproj files are searched in this folder and its sub-folders, grouped by
+            folder in the file pickers. Recommended layout: one sub-folder per model, with its
+            mmproj file inside — selecting a model then preselects the matching mmproj
+            automatically.
           </p>
           {modelInput.validation === 'invalid' && (
             <p className="text-xs text-destructive flex items-center gap-1">

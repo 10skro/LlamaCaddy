@@ -362,7 +362,10 @@ export function VersionCard({ version, actions, dragHandleProps }: VersionCardPr
       {/* Override Badge */}
       {hasOverride && (
         <div className="px-3 pt-1.5 pb-1.5">
-          <Badge variant="outline" className="border-border bg-secondary/20 text-foreground text-xs gap-1 max-w-full">
+          <Badge
+            variant="outline"
+            className="border-border bg-secondary/20 text-foreground text-xs gap-1 max-w-full"
+          >
             <SlidersHorizontal className="h-3 w-3 shrink-0" />
             <div className="flex flex-wrap items-center gap-1 min-w-0 line-clamp-2">
               {overrideModelName && (

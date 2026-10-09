@@ -1,12 +1,5 @@
-import { Settings2, Palette, RefreshCw } from 'lucide-react';
-
-export type SettingsTab = 'general' | 'appearance' | 'updates';
-
-export const SETTINGS_TABS: { id: SettingsTab; label: string; icon: typeof Settings2 }[] = [
-  { id: 'general', label: 'General', icon: Settings2 },
-  { id: 'appearance', label: 'Appearance', icon: Palette },
-  { id: 'updates', label: 'Updates', icon: RefreshCw },
-];
+import type { SettingsTab } from './settings-tabs';
+import { SETTINGS_TABS } from './settings-tabs';
 
 interface SettingsNavProps {
   active: SettingsTab;
@@ -42,10 +35,7 @@ export function SettingsNav({ active, onSelect, appVersion }: SettingsNavProps) 
         })}
       </div>
       <div className="px-3 py-2 text-xs text-muted-foreground space-y-0.5">
-        <p>
-          LlamaCaddy{' '}
-          {appVersion && appVersion !== '...' ? `v${appVersion}` : ''}
-        </p>
+        <p>LlamaCaddy {appVersion && appVersion !== '...' ? `v${appVersion}` : ''}</p>
         <p className="text-[11px] opacity-70">Built with Tauri, React, and Rust.</p>
       </div>
     </nav>

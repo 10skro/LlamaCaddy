@@ -322,36 +322,41 @@ export default function OverrideDialog({
             </div>
           ) : (
             groupFilesByFolder(files).map((group, i) => {
-              const rootName = folder ? folder.replace(/[\\/]+$/, '').split(/[\\/]/).pop() : '';
+              const rootName = folder
+                ? folder
+                    .replace(/[\\/]+$/, '')
+                    .split(/[\\/]/)
+                    .pop()
+                : '';
               const headerLabel = group.dir !== '' ? group.dir : `${rootName} (root)`;
               return (
-              <SelectGroup key={group.dir || '__root__'}>
-                <SelectLabel
-                  className={`flex items-center gap-1.5 text-xs font-semibold text-foreground rounded-sm border border-border/50 px-1.5 py-1 ${GROUP_BAND} ${i > 0 ? 'mt-1' : ''}`}
-                >
-                  <FolderOpen className="h-3 w-3" />
-                  {headerLabel}
-                </SelectLabel>
-                {group.files.map((file) => (
-                  <SelectItem
-                    key={file.path}
-                    value={file.path}
-                    className="hover:bg-item-highlight/15 focus:bg-item-highlight/15 text-foreground"
+                <SelectGroup key={group.dir || '__root__'}>
+                  <SelectLabel
+                    className={`flex items-center gap-1.5 text-xs font-semibold text-foreground rounded-sm border border-border/50 px-1.5 py-1 ${GROUP_BAND} ${i > 0 ? 'mt-1' : ''}`}
                   >
-                    <div className="flex items-center gap-2 max-w-full">
-                      <span className="truncate flex-1" title={file.path}>
-                        {file.name}
-                      </span>
-                      <Badge
-                        variant="outline"
-                        className={`text-[10px] h-5 px-1.5 shrink-0 ${extBadgeColor(getFileExt(file.name))}`}
-                      >
-                        {getFileExt(file.name)}
-                      </Badge>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectGroup>
+                    <FolderOpen className="h-3 w-3" />
+                    {headerLabel}
+                  </SelectLabel>
+                  {group.files.map((file) => (
+                    <SelectItem
+                      key={file.path}
+                      value={file.path}
+                      className="hover:bg-item-highlight/15 focus:bg-item-highlight/15 text-foreground"
+                    >
+                      <div className="flex items-center gap-2 max-w-full">
+                        <span className="truncate flex-1" title={file.path}>
+                          {file.name}
+                        </span>
+                        <Badge
+                          variant="outline"
+                          className={`text-[10px] h-5 px-1.5 shrink-0 ${extBadgeColor(getFileExt(file.name))}`}
+                        >
+                          {getFileExt(file.name)}
+                        </Badge>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
               );
             })
           )}
