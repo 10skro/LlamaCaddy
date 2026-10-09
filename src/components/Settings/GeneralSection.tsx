@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FolderCog, FolderOpen, Brain, HardDrive, AlertCircle, Check } from 'lucide-react';
+import { FolderCog, FolderOpen, Brain, HardDrive, AlertCircle, Check, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -111,9 +111,20 @@ export function GeneralSection({ settings, updateSetting }: GeneralSectionProps)
             llama.cpp Storage Path
           </Label>
           <div className="flex items-center gap-2">
-            <p className="flex-1 min-w-0 truncate rounded-md border border-border/40 bg-transparent px-3 py-2 font-mono text-sm text-muted-foreground select-all">
+            <p className="flex-1 min-w-0 truncate font-mono text-sm text-muted-foreground select-all">
               {storagePath}
             </p>
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Copy storage path"
+              onClick={() => {
+                navigator.clipboard.writeText(storagePath);
+                toast({ title: 'Path copied' });
+              }}
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
             <Button
               variant="outline"
               size="icon"
