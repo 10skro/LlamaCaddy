@@ -54,16 +54,16 @@ function parentDir(p: string): string {
   return p.replace(/[\\/]+[^\\/]*$/, '').toLowerCase();
 }
 
-/** Muted palette cycled per folder group: only the header row is colored —
- *  it acts as a separator band between folders. Rows stay neutral.
- *  Tailwind classes must be literal strings. */
+/** Muted palette cycled per folder group: the header ROW gets a subtle
+ *  colored background band (separator between folders); its text stays
+ *  neutral. Tailwind classes must be literal strings. */
 const GROUP_COLORS = [
-  'text-violet-300',
-  'text-sky-300',
-  'text-emerald-300',
-  'text-amber-300',
-  'text-rose-300',
-  'text-cyan-300',
+  'bg-violet-500/15',
+  'bg-sky-500/15',
+  'bg-emerald-500/15',
+  'bg-amber-500/15',
+  'bg-rose-500/15',
+  'bg-cyan-500/15',
 ];
 
 interface OverrideDialogProps {
@@ -337,7 +337,7 @@ export default function OverrideDialog({
               <SelectGroup key={group.dir || '__root__'}>
                 {group.dir !== '' && (
                   <SelectLabel
-                    className={`flex items-center gap-1.5 text-xs font-semibold ${headerColor} ${i > 0 ? 'border-t border-border/60 mt-1 pt-2' : ''}`}
+                    className={`flex items-center gap-1.5 text-xs font-semibold text-foreground rounded-sm px-1.5 py-1 ${headerColor} ${i > 0 ? 'mt-1' : ''}`}
                   >
                     <FolderOpen className="h-3 w-3" />
                     {group.dir}
