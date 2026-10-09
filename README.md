@@ -11,6 +11,7 @@ A modern Windows desktop application for managing [llama.cpp](https://github.com
 ## Table of Contents
 
 - [Installation](#installation)
+- [Updating](#updating)
 - [Features](#features)
   - [Dashboard](#dashboard)
   - [Catalog](#catalog)
@@ -35,7 +36,15 @@ npm install -g llamacaddy
 llamacaddy
 ```
 
-Updates: `npm install -g llamacaddy@latest` — or use the in-app update button.
+Or run it once without installing: `npx llamacaddy`.
+
+### Updating
+
+```bash
+npm install -g llamacaddy@latest
+```
+
+Or click the **Update available** button in the app: it opens a terminal running that npm command for you. There is no separate installer or updater — npm is the only distribution channel. See the [changelog](CHANGELOG.md) for release notes.
 
 ### From Source
 
