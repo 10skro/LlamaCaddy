@@ -35,7 +35,7 @@ export function SettingsPage() {
       <div className="max-w-3xl mx-auto w-full flex flex-col gap-6">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-          <p className="text-muted-foreground mt-1">Configure your Llama Manager preferences.</p>
+          <p className="text-muted-foreground mt-1">Configure your LlamaCaddy preferences.</p>
           <p className="text-xs text-muted-foreground mt-1">
             Manage storage paths, appearance, notifications, and advanced options.
           </p>

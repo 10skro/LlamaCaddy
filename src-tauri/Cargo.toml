@@ -1,12 +1,12 @@
 [package]
-name = "llamacpp-manager"
+name = "llamacaddy"
 version = "0.8.0"
-description = "A manager for llama.cpp versions"
+description = "LlamaCaddy - browse, download, configure and run llama.cpp server builds"
 authors = ["openfox"]
 edition = "2021"
 
 [lib]
-name = "llamacpp_manager_lib"
+name = "llamacaddy_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

@@ -1,4 +1,4 @@
-# Llama Manager
+# LlamaCaddy
 
 A modern Windows desktop application for managing [llama.cpp](https://github.com/ggerganov/llama.cpp) builds. Browse, download, configure, and run llama.cpp servers — all from a clean, intuitive interface.
 
@@ -26,13 +26,13 @@ A modern Windows desktop application for managing [llama.cpp](https://github.com
 
 ## Installation
 
-> **Windows only.** Llama Manager is a native Windows desktop application.
+> **Windows only.** LlamaCaddy is a native Windows desktop application.
 
 ### Installer
 
 1. Download the latest `.exe` installer from the [Releases](https://github.com/10skro/LLama_Manager/releases) page.
 2. Run the installer and follow the prompts.
-3. Launch **Llama Manager** from your Start menu or desktop.
+3. Launch **LlamaCaddy** from your Start menu or desktop.
 
 ### From Source
 
@@ -53,7 +53,7 @@ npm run tauri build
 
 ## Features
 
-Llama Manager simplifies using llama.cpp on Windows. Instead of manually downloading versions from GitHub, extracting archives, and typing commands into a terminal, you have a single application that handles the entire process:
+LlamaCaddy simplifies using llama.cpp on Windows. Instead of manually downloading versions from GitHub, extracting archives, and typing commands into a terminal, you have a single application that handles the entire process:
 
 - **Finding** the version suited to your hardware (CPU, CUDA, Vulkan)
 - **Downloading and installing** that version with a single click

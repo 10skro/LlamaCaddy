@@ -40,7 +40,7 @@ export function StorageSection({ settings }: StorageSectionProps) {
           <div className="flex gap-2">
             <Input
               value={settings?.storage_path || ''}
-              placeholder="Default: %LOCALAPPDATA%\llama-manager"
+              placeholder="Default: %LOCALAPPDATA%\llamacaddy"
               className="bg-background/50 font-mono text-sm"
               disabled
             />

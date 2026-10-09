@@ -25,6 +25,9 @@ pub fn init(app: &tauri::App) -> Result<(), crate::models::types::AppError> {
         .app_local_data_dir()
         .expect("Failed to get app data dir");
 
+    // 0. One-time migration from the legacy llama-manager data folder
+    utils::migrate_legacy_data_dir(&app_dir);
+
     // 1. Create required directories
     utils::setup_directories(&app_dir)?;
 

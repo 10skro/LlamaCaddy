@@ -40,7 +40,7 @@ pub fn create_main_window(app: &tauri::AppHandle, initial_theme: &str) {
     // Create main window with native background_color (prevents flash before HTML paints)
     let bg_color = theme_to_color(initial_theme);
     let main_window = tauri::WebviewWindow::builder(app, "main", tauri::WebviewUrl::App("index.html".into()))
-        .title("Llama Manager")
+        .title("LlamaCaddy")
         .inner_size(1280.0, 800.0)
         .min_inner_size(900.0, 600.0)
         .resizable(true)

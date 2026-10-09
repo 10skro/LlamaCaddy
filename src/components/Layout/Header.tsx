@@ -44,7 +44,7 @@ export function Header() {
     await installUpdate(updateInfo.version ?? undefined, updateInfo.body ?? undefined);
   };
 
-  const title = pageTitles[location.pathname] || 'Llama Manager';
+  const title = pageTitles[location.pathname] || 'LlamaCaddy';
 
   const hasAppUpdate = updateInfo.available;
   const hasNotifications = newBuilds.length > 0 || hasAppUpdate;

@@ -19,7 +19,7 @@ export function AboutSection({ appVersion }: AboutSectionProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         <p className="text-sm text-muted-foreground">
-          <strong className="text-foreground">Llama Manager</strong>{' '}
+          <strong className="text-foreground">LlamaCaddy</strong>{' '}
           {appVersion ? `v${appVersion}` : '...'}
         </p>
         <p className="text-sm text-muted-foreground">
