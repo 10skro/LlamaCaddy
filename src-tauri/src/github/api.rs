@@ -50,7 +50,6 @@ static BUILD_NAME_RE: OnceLock<Regex> = OnceLock::new();
 /// This singleton avoids creating a new reqwest::Client for every request.
 pub struct GithubClient {
     client: reqwest::Client,
-    github_token: Mutex<Option<String>>,
     /// Cached ETag for conditional requests (If-None-Match)
     etag: Mutex<Option<String>>,
 }
@@ -59,36 +58,23 @@ impl GithubClient {
     /// Create a new GithubClient.
     /// If `persisted_etag` is provided, it initializes the in-memory ETag cache
     /// so that the first request can use a conditional request (If-None-Match).
-    pub fn new(github_token: Option<String>, persisted_etag: Option<String>) -> Self {
+    pub fn new(persisted_etag: Option<String>) -> Self {
         Self {
             client: reqwest::Client::builder()
                 .user_agent("LlamaCpp-Manager/0.1.0")
                 .timeout(std::time::Duration::from_secs(30))
                 .build()
                 .expect("Failed to create HTTP client"),
-            github_token: Mutex::new(github_token),
             etag: Mutex::new(persisted_etag),
         }
     }
 
-    /// Update the token at runtime (no restart needed).
-    pub fn set_token(&self, token: Option<String>) {
-        let mut gt = self.github_token.lock().unwrap();
-        *gt = token;
-    }
-
-    /// Build a request with auth header if token is configured.
+    /// Build a request.
     /// If `skip_etag` is true, the If-None-Match header is omitted (used for search).
     fn build_request(&self, url: &str, skip_etag: bool) -> reqwest::RequestBuilder {
         let mut builder = self.client
             .get(url)
             .header("Accept", "application/vnd.github.v3+json");
-
-        // Add Authorization header if token is present
-        let token = self.github_token.lock().unwrap().clone();
-        if let Some(ref t) = token {
-            builder = builder.header("Authorization", format!("Bearer {}", t));
-        }
 
         // Add If-None-Match header if we have a cached ETag (skip for search)
         if !skip_etag {

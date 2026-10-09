@@ -8,7 +8,6 @@ import {
   ModelsSection,
   AppearanceSection,
   NotificationsSection,
-  AdvancedSection,
   AboutSection,
 } from '@/components/Settings';
 
@@ -37,7 +36,7 @@ export function SettingsPage() {
           <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
           <p className="text-muted-foreground mt-1">Configure your LlamaCaddy preferences.</p>
           <p className="text-xs text-muted-foreground mt-1">
-            Manage storage paths, appearance, notifications, and advanced options.
+            Manage storage paths, appearance, and notifications.
           </p>
         </div>
 
@@ -54,7 +53,6 @@ export function SettingsPage() {
           updateSetting={updateSetting}
           appUpdateLastChecked={appUpdateLastChecked}
         />
-        <AdvancedSection />
         <AboutSection appVersion={appVersion} />
       </div>
     </div>

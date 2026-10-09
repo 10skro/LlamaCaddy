@@ -2,8 +2,6 @@ use tauri::{AppHandle, Manager, State};
 
 use crate::config::settings::SettingsManager;
 use crate::db::connection::DbManager;
-use crate::db::repo;
-use crate::github::api::GithubClient;
 use tauri_plugin_dialog::DialogExt;
 
 /// Get current application settings from the database.
@@ -72,46 +70,6 @@ pub fn open_storage_folder(
     cmd
         .spawn()
         .map_err(|e| format!("Failed to open folder {}: {}", path, e))?;
-    Ok(())
-}
-
-/// Save (or clear) the GitHub API token.
-#[tauri::command]
-pub fn save_github_token(
-    state_db: State<'_, DbManager>,
-    state_github: State<'_, GithubClient>,
-    token: String,
-) -> Result<(), String> {
-    if token.is_empty() {
-        let conn = state_db.lock_conn().map_err(|e| e.to_string())?;
-        repo::delete_setting(&conn, "github_token").map_err(|e| e.to_string())?;
-        state_github.set_token(None);
-    } else {
-        let conn = state_db.lock_conn().map_err(|e| e.to_string())?;
-        repo::set_setting(&conn, "github_token", &token).map_err(|e| e.to_string())?;
-        state_github.set_token(Some(token));
-    }
-    Ok(())
-}
-
-/// Check whether a GitHub token is configured.
-#[tauri::command]
-pub fn has_github_token(
-    state_db: State<'_, DbManager>,
-) -> Result<bool, String> {
-    let conn = state_db.lock_conn().map_err(|e| e.to_string())?;
-    Ok(repo::get_setting(&conn, "github_token").map_err(|e| e.to_string())?.is_some())
-}
-
-/// Delete the GitHub token from the database and clear it from the client.
-#[tauri::command]
-pub fn delete_github_token(
-    state_db: State<'_, DbManager>,
-    state_github: State<'_, GithubClient>,
-) -> Result<(), String> {
-    let conn = state_db.lock_conn().map_err(|e| e.to_string())?;
-    repo::delete_setting(&conn, "github_token").map_err(|e| e.to_string())?;
-    state_github.set_token(None);
     Ok(())
 }
 
