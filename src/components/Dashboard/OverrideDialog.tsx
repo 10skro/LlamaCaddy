@@ -365,7 +365,7 @@ export default function OverrideDialog({
               filter={mmprojFilter}
               onFilterChange={setMmprojFilter}
               placeholder="Select a mmproj file..."
-              noFolderMessage="Configure a mmproj folder in Settings to enable mmproj selection."
+              noFolderMessage="Configure a model folder in Settings to enable mmproj selection."
             />
           </div>
         )}
