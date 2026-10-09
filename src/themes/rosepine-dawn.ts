@@ -50,10 +50,12 @@ export const rosepineDawn: Theme = {
     '--accent-foreground': hexToHSL(rosepineDawnColors.surface),
     '--destructive': hexToHSL(rosepineDawnColors.love),
     '--destructive-foreground': hexToHSL(rosepineDawnColors.surface),
-    '--border': hexToHSL(rosepineDawnColors['highlight-high']),
-    '--input': hexToHSL(rosepineDawnColors['highlight-med']),
+    '--border': '258 15% 71%', // #b5aec1 — darker than highlight-high: visible separation on light bg
+    '--input': '258 15% 71%',
     '--ring': hexToHSL(rosepineDawnColors.pine),
     '--sidebar': hexToHSL(rosepineDawnColors['highlight-med']),
+    // Popover/dropdown background alpha (light: translucent text-on-text is unreadable)
+    '--popover-alpha': '1',
     // Rosé Pine Dawn native colors as CSS variables
     '--love': hexToHSL(rosepineDawnColors.love),
     '--gold': hexToHSL(rosepineDawnColors.gold),

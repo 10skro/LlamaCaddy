@@ -60,10 +60,12 @@ export const catppuccinMocha: Theme = {
     '--accent-foreground': '0 0% 15%',
     '--destructive': hexToHSL(catppuccinMochaColors.red),
     '--destructive-foreground': '0 0% 15%',
-    '--border': hexToHSL(catppuccinMochaColors.surface0),
-    '--input': hexToHSL(catppuccinMochaColors.crust),
+    '--border': hexToHSL(catppuccinMochaColors.surface1),
+    '--input': hexToHSL(catppuccinMochaColors.surface1),
     '--ring': hexToHSL(catppuccinMochaColors.blue),
     '--sidebar': hexToHSL(catppuccinMochaColors.crust),
+    // Popover/dropdown background alpha (dark: translucent + blur is readable)
+    '--popover-alpha': '0.85',
     // Catppuccin native colors as CSS variables
     '--rosewater': hexToHSL(catppuccinMochaColors.rosewater),
     '--flamingo': hexToHSL(catppuccinMochaColors.flamingo),

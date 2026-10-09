@@ -305,7 +305,7 @@ export default function OverrideDialog({
             }
           />
         </SelectTrigger>
-        <SelectContent className="max-w-[calc(var(--radix-select-trigger-width)-1px)] min-w-[8rem] bg-popover/80 [&_[data-highlighted]]:bg-item-highlight/15 [&_[data-highlighted]]:text-foreground [&_[data-state=checked]]:bg-item-highlight/15">
+        <SelectContent className="max-w-[calc(var(--radix-select-trigger-width)-1px)] min-w-[8rem] bg-popover/[var(--popover-alpha,0.95)] [&_[data-highlighted]]:bg-item-highlight/15 [&_[data-highlighted]]:text-foreground [&_[data-state=checked]]:bg-item-highlight/15">
           {scanning ? (
             <SelectItem
               value="__loading"
@@ -327,7 +327,7 @@ export default function OverrideDialog({
               return (
               <SelectGroup key={group.dir || '__root__'}>
                 <SelectLabel
-                  className={`flex items-center gap-1.5 text-xs font-semibold text-foreground rounded-sm px-1.5 py-1 ${GROUP_BAND} ${i > 0 ? 'mt-1' : ''}`}
+                  className={`flex items-center gap-1.5 text-xs font-semibold text-foreground rounded-sm border border-border/50 px-1.5 py-1 ${GROUP_BAND} ${i > 0 ? 'mt-1' : ''}`}
                 >
                   <FolderOpen className="h-3 w-3" />
                   {headerLabel}
