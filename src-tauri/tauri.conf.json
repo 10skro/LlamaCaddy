@@ -15,19 +15,8 @@
       "csp": null
     }
   },
-  "plugins": {
-    "updater": {
-      "active": true,
-      "endpoints": [
-        "https://10skro.github.io/LLama_Manager/latest.json"
-      ],
-      "dialog": false,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDUzMDhFRjZERDJDQTM1NzIKUldSeU5jclNiZThJVTF5TFlTWlFLOEgzRnNJa3pjdlpoTThTbXhVTGZhNnVLZjZIYWh5d0J2QkoK"
-    }
-  },
   "bundle": {
     "active": true,
-    "createUpdaterArtifacts": true,
     "targets": ["nsis", "msi"],
     "icon": [
       "icons/icon.ico",

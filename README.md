@@ -2,7 +2,7 @@
 
 A modern Windows desktop application for managing [llama.cpp](https://github.com/ggerganov/llama.cpp) builds. Browse, download, configure, and run llama.cpp servers — all from a clean, intuitive interface.
 
-[![Version](https://img.shields.io/badge/version-0.6.13-blue.svg)](https://github.com/10skro/LLama_Manager/releases)
+[![Version](https://img.shields.io/badge/version-0.6.13-blue.svg)](https://github.com/10skro/LlamaCaddy/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg?logo=windows)](https://www.microsoft.com/windows)
 
@@ -28,17 +28,20 @@ A modern Windows desktop application for managing [llama.cpp](https://github.com
 
 > **Windows only.** LlamaCaddy is a native Windows desktop application.
 
-### Installer
+### Install (npm)
 
-1. Download the latest `.exe` installer from the [Releases](https://github.com/10skro/LLama_Manager/releases) page.
-2. Run the installer and follow the prompts.
-3. Launch **LlamaCaddy** from your Start menu or desktop.
+```bash
+npm install -g llamacaddy
+llamacaddy
+```
+
+Updates: `npm install -g llamacaddy@latest` — or use the in-app update button.
 
 ### From Source
 
 ```cmd
-git clone https://github.com/10skro/LLama_Manager.git
-cd LLama_Manager
+git clone https://github.com/10skro/LlamaCaddy.git
+cd LlamaCaddy
 npm install
 npm run tauri dev
 ```

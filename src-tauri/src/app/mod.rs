@@ -8,7 +8,6 @@ pub fn run() {
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_http::init())
-        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| setup::init(app).map_err(|e| Box::new(e) as Box<dyn std::error::Error>))
         .invoke_handler(tauri::generate_handler![
             crate::github::commands::fetch_builds,

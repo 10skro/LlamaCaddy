@@ -1,0 +1,97 @@
+name: publish-npm
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Ensure npm CLI supports trusted publishing
+        run: npm install -g npm@11
+
+      - name: Install frontend deps
+        run: npm install
+
+      - name: Stamp app version from tag
+        shell: powershell
+        run: |
+          $ver = "${{ github.ref_name }}".TrimStart('v')
+          node -e "const f='src-tauri/tauri.conf.json';const p=require('./'+f);p.version=process.argv[1];require('fs').writeFileSync(f,JSON.stringify(p,null,2))" $ver
+          node -e "const f='package.json';const p=require('./'+f);p.version=process.argv[1];require('fs').writeFileSync(f,JSON.stringify(p,null,2))" $ver
+          (Get-Content src-tauri/Cargo.toml -Raw) -replace '(?m)^version = "[^"]*"', ('version = "' + $ver + '"') | Set-Content src-tauri/Cargo.toml -NoNewline
+
+      - name: Build native binary
+        run: npm run tauri -- build --no-bundle
+
+      - name: Stage binary into npm package
+        shell: powershell
+        run: |
+          Copy-Item "src-tauri/target/release/llamacaddy.exe" "npm-package/llamacaddy/bin/LlamaCaddy.exe"
+
+      - name: Set package version from tag
+        shell: powershell
+        run: |
+          $ver = "${{ github.ref_name }}".TrimStart('v')
+          node -e "const f='npm-package/llamacaddy/package.json';const p=require('./'+f);p.version=process.argv[1];require('fs').writeFileSync(f,JSON.stringify(p,null,2))" $ver
+
+      - name: Publish to npm
+        working-directory: npm-package/llamacaddy
+        run: npm publish --access public --provenance
+
+  release-notes:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate user-facing notes from CHANGELOG
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [ -f CHANGELOG.md ] && awk -v tag="$TAG" 'index($0,"## "tag)==1{f=1;print;next} f&&/^## /{exit} f' CHANGELOG.md | grep -q .; then
+            awk -v tag="$TAG" 'index($0,"## "tag)==1{f=1;print;next} f&&/^## /{exit} f' CHANGELOG.md > notes.md
+          else
+            PREV=$(git describe --tags --abbrev=0 "${TAG}^" 2>/dev/null || echo "")
+            RANGE="${PREV:+$PREV..}$TAG"
+            {
+              echo "## Nouveautés"
+              git log "$RANGE" --no-merges --pretty=format:'- %s' \
+                --grep='^feat' --grep='^fix' | sed 's/^[a-z]*([^)]*): /- /; s/^[a-z]*: /- /'
+            } > notes.md
+          fi
+          echo "" >> notes.md
+          echo "_Publication automatique signée (npm provenance) — installation : \`npm install -g llamacaddy\`_" >> notes.md
+
+      - name: Create GitHub release (text only, no binaries)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" --title "$TAG" --notes-file notes.md --latest

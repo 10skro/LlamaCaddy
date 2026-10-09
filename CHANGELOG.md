@@ -12,7 +12,10 @@
 - Vulnérabilités npm restantes (vitest, tailwindcss, react-router, braces) : corrigées seulement par des mises à jour majeures, planifiées séparément.
 
 ### À venir
-- Distribution par npm (`llamacaddy`) à la place de l'installeur `.exe` + updater maison + `latest.json` + GitHub Pages (comme WhisperPro).
+- ~~Distribution par npm (`llamacaddy`) à la place de l'installeur `.exe` + updater maison + `latest.json` + GitHub Pages (comme WhisperPro).~~ → fait ci-dessous.
+
+### Distribution
+- **Passage à npm** : l'application s'installe et se met à jour avec `npm install -g llamacaddy` (comme WhisperPro). Suppression de l'updater Tauri, du fichier `docs/latest.json` et du workflow GitHub Pages. Le bouton « Update available » de l'application ouvre maintenant un terminal `npm install -g llamacaddy@latest`. Publication automatique signée (npm provenance) au push d'un tag `v*`, notes de release reprises du CHANGELOG.
 
 ## v0.8.0 et antérieurs
 

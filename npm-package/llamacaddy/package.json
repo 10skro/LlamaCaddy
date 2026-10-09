@@ -1,0 +1,25 @@
+{
+  "name": "llamacaddy",
+  "version": "0.8.0",
+  "description": "LlamaCaddy - browse, download, configure and run llama.cpp server builds on Windows. Launch with: llamacaddy",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/10skro/LlamaCaddy.git"
+  },
+  "type": "module",
+  "bin": {
+    "llamacaddy": "bin/cli.js"
+  },
+  "files": [
+    "bin/cli.js",
+    "bin/LlamaCaddy.exe",
+    "README.md"
+  ],
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ]
+}

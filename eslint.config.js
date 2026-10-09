@@ -11,6 +11,7 @@ export default [
     ignores: [
       'node_modules/**',
       'src-tauri/**',
+      'npm-package/**',
       'dist/**',
       'build/**',
       'docs/**',
