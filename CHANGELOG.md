@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased (prochaine version v0.9.0)
+## Unreleased
+
+## v0.9.0 — 2026-10-09
 
 ### Nouveautés
 - **Nouveau nom : LlamaCaddy** — l'application s'appelle désormais LlamaCaddy (fenêtre, interface, installeur, dépôt GitHub `10skro/LlamaCaddy`). Vos données sont migrées automatiquement au premier lancement (`%LOCALAPPDATA%\llama-manager` → `%LOCALAPPDATA%\llamacaddy`) : versions installées, configurations et favoris sont conservés.

@@ -53,6 +53,9 @@ opencode.jsonc
 # Local backup of signing keys (never commit these!)
 backups/
 
+# npm package binary (staged by CI / local publish, never commit)
+npm-package/llamacaddy/bin/LlamaCaddy.exe
+
 # Analysis files (local only)
 suppressions-warnings.md
 clippy-warnings.md
