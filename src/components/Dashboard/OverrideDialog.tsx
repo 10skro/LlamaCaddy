@@ -305,7 +305,7 @@ export default function OverrideDialog({
             }
           />
         </SelectTrigger>
-        <SelectContent className="max-w-[calc(var(--radix-select-trigger-width)-1px)] min-w-[8rem] [&_[data-highlighted]]:bg-item-highlight/15 [&_[data-highlighted]]:text-foreground [&_[data-state=checked]]:bg-item-highlight/15">
+        <SelectContent className="max-w-[calc(var(--radix-select-trigger-width)-1px)] min-w-[8rem] bg-popover/80 [&_[data-highlighted]]:bg-item-highlight/15 [&_[data-highlighted]]:text-foreground [&_[data-state=checked]]:bg-item-highlight/15">
           {scanning ? (
             <SelectItem
               value="__loading"
