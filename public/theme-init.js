@@ -34,10 +34,4 @@
     '--background',
     Math.round(hh * 360) + ' ' + Math.round(s * 100) + '% ' + Math.round(l * 100) + '%'
   );
-  console.log(
-    '[THEME-BOOT] ①.5 theme-init.js re-applied: theme=' +
-      theme +
-      ', --background=' +
-      el.style.getPropertyValue('--background')
-  );
 })();

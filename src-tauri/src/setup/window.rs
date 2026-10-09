@@ -32,7 +32,7 @@ pub fn create_main_window(app: &tauri::AppHandle, initial_theme: &str) {
     // in index.html to re-apply after HTML parsing (init script DOM changes are
     // lost when the HTML document replaces the blank initial document).
     let anti_flash_script = format!(
-        r##"(function(){{console.log("[THEME-BOOT] ① initialization_script: theme={theme}, bg={bg}");var el=document.documentElement;if(el){{el.setAttribute("data-theme","{theme}");el.style.backgroundColor="{bg}";}}window.__INITIAL_THEME__="{theme}";window.__INITIAL_BG__="{bg}";}})();"##,
+        r##"(function(){{var el=document.documentElement;if(el){{el.setAttribute("data-theme","{theme}");el.style.backgroundColor="{bg}";}}window.__INITIAL_THEME__="{theme}";window.__INITIAL_BG__="{bg}";}})();"##,
         theme = initial_theme,
         bg = bg_hex,
     );

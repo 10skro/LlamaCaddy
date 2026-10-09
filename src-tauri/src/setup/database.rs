@@ -10,7 +10,6 @@ use crate::models::types::AppError;
 /// Data loaded from the database during setup, before it's moved into Tauri state.
 pub struct DatabaseSetupResult {
     pub db: DbManager,
-    pub github_token: Option<String>,
     pub persisted_etag: Option<String>,
     pub initial_theme: String,
 }
@@ -34,12 +33,6 @@ pub fn init(app_dir: &std::path::Path) -> Result<DatabaseSetupResult, AppError> 
             log::warn!("[CONFIG-MIGRATION] Partial migration failure: {}", e);
         }
     }
-
-    // Load GitHub token from settings table
-    let github_token = {
-        let conn = db.lock_conn().ok();
-        conn.and_then(|c| repo::get_setting(&c, "github_token").ok().flatten())
-    };
 
     // Load persisted ETag for conditional GitHub requests on startup
     let persisted_etag = {
@@ -65,7 +58,6 @@ pub fn init(app_dir: &std::path::Path) -> Result<DatabaseSetupResult, AppError> 
 
     Ok(DatabaseSetupResult {
         db,
-        github_token,
         persisted_etag,
         initial_theme,
     })

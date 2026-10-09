@@ -37,7 +37,6 @@ pub fn init(app: &tauri::App) -> Result<(), crate::models::types::AppError> {
     // 3. Initialize database + read startup values
     let database::DatabaseSetupResult {
         db,
-        github_token,
         persisted_etag,
         initial_theme,
     } = database::init(&app_dir)?;
@@ -45,7 +44,7 @@ pub fn init(app: &tauri::App) -> Result<(), crate::models::types::AppError> {
     // 4. Register Tauri state
     app.manage(db);
     app.manage(DownloadManager::new());
-    app.manage(GithubClient::new(github_token, persisted_etag));
+    app.manage(GithubClient::new(persisted_etag));
     app.manage(TerminalManager::new());
 
     // 5. Register event listeners

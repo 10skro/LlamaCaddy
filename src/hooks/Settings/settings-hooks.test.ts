@@ -11,23 +11,6 @@ describe('settings hooks — smoke tests', () => {
     vi.resetModules();
   });
 
-  describe('useGithubTokenState', () => {
-    it('should export a function', async () => {
-      vi.doMock('@/services/github-token', () => ({
-        saveGithubToken: vi.fn().mockResolvedValue(undefined),
-        hasGithubToken: vi.fn().mockResolvedValue(false),
-        deleteGithubToken: vi.fn().mockResolvedValue(undefined),
-      }));
-      vi.doMock('react', () => ({
-        useState: vi.fn((init) => [init, vi.fn()]),
-        useEffect: vi.fn(),
-      }));
-
-      const mod = await import('@/hooks/Settings/useGithubTokenState');
-      expect(typeof mod.useGithubTokenState).toBe('function');
-    });
-  });
-
   describe('useDebouncedFolderInput', () => {
     it('should export a function', async () => {
       vi.doMock('@/services/settings', () => ({

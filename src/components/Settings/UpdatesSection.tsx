@@ -12,27 +12,21 @@ import { ChangelogModal } from '@/components/shared/ChangelogModal';
 import { ServerRunningWarningDialog } from '@/components/shared/ServerRunningWarningDialog';
 import { useServerCheck } from '@/hooks/useServerCheck';
 
-const TOAST_DURATIONS = [
-  { label: '2s', value: 2000 },
-  { label: '3s', value: 3000 },
-  { label: '5s', value: 5000 },
-];
-
-interface NotificationsSectionProps {
+interface UpdatesSectionProps {
   settings: AppSettings | null;
   updateSetting: <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => void;
   appUpdateLastChecked: string | null;
 }
 
 /**
- * Notifications section — update checks, toast duration, and update install UI.
+ * Updates section — update checks, startup modal, and update install UI.
  */
-export function NotificationsSection({
+export function UpdatesSection({
   settings,
   updateSetting,
   appUpdateLastChecked,
-}: NotificationsSectionProps) {
-  const { persistSetting, toggleBooleanSetting } = useSettingsPersistence(settings, updateSetting);
+}: UpdatesSectionProps) {
+  const { toggleBooleanSetting } = useSettingsPersistence(settings, updateSetting);
   const {
     updateInfo,
     isChecking,
@@ -64,7 +58,7 @@ export function NotificationsSection({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5" />
-            Notifications
+            Updates
           </CardTitle>
           <CardDescription>Control update checks and notifications.</CardDescription>
         </CardHeader>
@@ -212,41 +206,6 @@ export function NotificationsSection({
                 </div>
               </div>
             )}
-          </div>
-
-          <Separator className="border-border/50" />
-
-          {/* Toast duration */}
-          <div className="flex items-center gap-4">
-            <div>
-              <Label>Toast notification duration</Label>
-              <p className="text-xs text-muted-foreground mt-1">
-                How long notification toasts remain visible.
-              </p>
-            </div>
-            <div className="flex gap-1.5" role="group" aria-label="Toast notification duration">
-              {TOAST_DURATIONS.map((opt) => {
-                const isActive = (settings?.toast_duration ?? 5000) === opt.value;
-                return (
-                  <Button
-                    key={opt.value}
-                    variant={isActive ? 'default' : 'outline'}
-                    size="sm"
-                    className={
-                      isActive ? 'ring-2 ring-accent ring-offset-2 ring-offset-background' : ''
-                    }
-                    onClick={() =>
-                      persistSetting('toast_duration', opt.value, {
-                        title: 'Toast duration updated',
-                        description: `Notifications will stay visible for ${opt.label}.`,
-                      })
-                    }
-                  >
-                    {opt.label}
-                  </Button>
-                );
-              })}
-            </div>
           </div>
         </CardContent>
       </Card>

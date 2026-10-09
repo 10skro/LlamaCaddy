@@ -1,7 +1,14 @@
-use crate::config::storage::SYSTEM_DIRS;
 use crate::db::connection::DbManager;
 use crate::db::repo;
 use crate::models::types::{AppError, AppSettings};
+
+/// Directories that must never be used as the storage root.
+const SYSTEM_DIRS: &[&str] = &[
+    "C:\\Windows",
+    "C:\\Program Files",
+    "C:\\Program Files (x86)",
+    "C:\\ProgramData",
+];
 
 /// Manages application settings stored in the database.
 pub struct SettingsManager;

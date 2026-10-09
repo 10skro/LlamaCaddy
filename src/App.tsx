@@ -61,12 +61,7 @@ function App() {
   useEffect(() => {
     const loadSettingsAndTheme = async () => {
       try {
-        console.log(
-          '[THEME-BOOT] ⑤ getSettings() start, bg from computed:',
-          getComputedStyle(document.documentElement).getPropertyValue('--background').trim()
-        );
         const settings = await getSettings();
-        console.log('[THEME-BOOT] ⑥ getSettings() done, theme=', settings.theme);
         const merged: AppSettings = {
           storage_path: settings.storage_path ?? '',
           theme: settings.theme ?? DEFAULT_THEME_ID,

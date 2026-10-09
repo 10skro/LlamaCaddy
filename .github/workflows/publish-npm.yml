@@ -87,8 +87,6 @@ jobs:
                 --grep='^feat' --grep='^fix' | sed 's/^[a-z]*([^)]*): /- /; s/^[a-z]*: /- /'
             } > notes.md
           fi
-          echo "" >> notes.md
-          echo "_Publication automatique signée (npm provenance) — installation : \`npm install -g llamacaddy\`_" >> notes.md
 
       - name: Create GitHub release (text only, no binaries)
         env:

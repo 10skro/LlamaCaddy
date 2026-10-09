@@ -20,16 +20,18 @@ export function selectFolder(): Promise<string | null> {
 }
 
 /**
- * Changes the storage path with full migration.
- * Validates the new path, migrates existing files, updates the database,
- * and cleans up the old storage directory.
- *
- * @param oldPath - The current storage path.
- * @param newPath - The new storage path to migrate to.
- * @returns The new storage path on success.
+ * Resolve the effective storage directory (configured path, or the app data
+ * directory as fallback).
  */
-export async function changeStoragePath(oldPath: string, newPath: string): Promise<string> {
-  return invoke<string>('change_storage_path', { oldPath, newPath }) as Promise<string>;
+export async function getStoragePath(): Promise<string> {
+  return invoke<string>('get_storage_path') as Promise<string>;
+}
+
+/**
+ * Open the storage folder in the system file manager.
+ */
+export async function openStorageFolder(): Promise<void> {
+  return invoke<void>('open_storage_folder') as Promise<void>;
 }
 
 /**

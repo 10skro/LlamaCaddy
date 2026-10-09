@@ -10,12 +10,6 @@ import App from './App';
 import '@xterm/xterm/css/xterm.css';
 import './index.css';
 
-// THEME-BOOT diagnostic: mark CSS load completion
-console.log(
-  '[THEME-BOOT] ② CSS loaded, bg from computed:',
-  getComputedStyle(document.documentElement).getPropertyValue('--background').trim()
-);
-
 // Global error handlers to catch silent crashes that freeze the UI
 window.addEventListener('error', (event) => {
   console.error('[GlobalError]', event.error || event.message);
@@ -45,18 +39,16 @@ if (isTerminalWindow) {
   // Theme is applied by useTheme() hook after React mounts
   const root = document.getElementById('root')!;
   (async () => {
-    console.log('[THEME-BOOT] ③ React mount (terminal)');
     const { default: TerminalWidgetApp } =
       await import('./components/TerminalWidget/TerminalWidgetApp');
     ReactDOM.createRoot(root).render(<TerminalWidgetApp />);
   })();
 } else {
   // Render the main application
-  console.log('[THEME-BOOT] ③ React mount (main)');
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <App />
         </BrowserRouter>
       </QueryClientProvider>
