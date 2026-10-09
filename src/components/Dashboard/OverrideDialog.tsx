@@ -54,6 +54,17 @@ function parentDir(p: string): string {
   return p.replace(/[\\/]+[^\\/]*$/, '').toLowerCase();
 }
 
+/** Muted palette cycled per folder group so adjacent groups are visually
+ *  distinct without being loud. Tailwind classes must be literal strings. */
+const GROUP_COLORS = [
+  'text-violet-300',
+  'text-sky-300',
+  'text-emerald-300',
+  'text-amber-300',
+  'text-rose-300',
+  'text-cyan-300',
+];
+
 interface OverrideDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -139,17 +150,29 @@ export default function OverrideDialog({
     }
   }, [open, currentOverride]);
 
+  // When the mmproj picker scans the model folder itself (the recommended
+  // layout), its list is locked to the selected model's folder.
+  const mmprojLockedToModel = !mmprojFolder && !!selectedModel;
+  const selectedModelDir = selectedModel ? parentDir(selectedModel) : '';
+
+  const visibleMmprojFiles = useMemo(() => {
+    if (!mmprojLockedToModel) return mmprojFiles;
+    return mmprojFiles.filter((f) => parentDir(f.path) === selectedModelDir);
+  }, [mmprojFiles, mmprojLockedToModel, selectedModelDir]);
+
   const handleModelChange = useCallback(
     (path: string) => {
       setSelectedModel(path);
-      // Suggest the mmproj sitting in the same folder as the chosen model,
-      // unless the user already picked one.
-      if (path && !selectedMmproj) {
-        const parent = parentDir(path);
-        const siblings = mmprojFiles.filter((f) => parentDir(f.path) === parent);
-        if (siblings.length === 1) {
-          setSelectedMmproj(siblings[0].path);
-        }
+      if (!path) return;
+      const parent = parentDir(path);
+      const siblings = mmprojFiles.filter((f) => parentDir(f.path) === parent);
+      // The mmproj list is scoped to the model's folder: drop a selection that
+      // no longer belongs to it, and auto-pick when the folder has exactly one.
+      if (selectedMmproj && !siblings.some((f) => f.path === selectedMmproj)) {
+        setSelectedMmproj('');
+      }
+      if (!selectedMmproj && siblings.length === 1) {
+        setSelectedMmproj(siblings[0].path);
       }
     },
     [selectedMmproj, mmprojFiles]
@@ -240,6 +263,7 @@ export default function OverrideDialog({
     onFilterChange,
     placeholder,
     noFolderMessage,
+    lockedTo,
   }: {
     label: string;
     folder: string | undefined;
@@ -250,6 +274,9 @@ export default function OverrideDialog({
     onFilterChange: (f: FileExtensionFilter) => void;
     placeholder: string;
     noFolderMessage: string;
+    /** When set, the list is scoped to this folder (shown as a hint).
+     *  null = no model selected yet; a string = the model's folder. */
+    lockedTo?: string | null;
   }) => (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
@@ -271,9 +298,21 @@ export default function OverrideDialog({
           </div>
         )}
       </div>
-      <Select value={value} onValueChange={onChange} disabled={!folder || scanning}>
+      <Select
+        value={value}
+        onValueChange={onChange}
+        disabled={!folder || scanning || lockedTo === null}
+      >
         <SelectTrigger className="w-full min-w-0 max-w-full overflow-hidden [&>span]:block [&>span]:overflow-hidden [&>span]:whitespace-nowrap [&>span]:truncate">
-          <SelectValue placeholder={folder ? placeholder : noFolderMessage} />
+          <SelectValue
+            placeholder={
+              !folder
+                ? noFolderMessage
+                : lockedTo === null
+                  ? 'Select a model first — mmproj files come from its folder.'
+                  : placeholder
+            }
+          />
         </SelectTrigger>
         <SelectContent className="max-w-[calc(var(--radix-select-trigger-width)-1px)] min-w-[8rem] [&_[data-highlighted]]:bg-item-highlight/15 [&_[data-highlighted]]:text-foreground [&_[data-state=checked]]:bg-item-highlight/15">
           {scanning ? (
@@ -286,13 +325,17 @@ export default function OverrideDialog({
             </SelectItem>
           ) : files.length === 0 ? (
             <div className="px-2 py-3 text-xs text-muted-foreground text-center">
-              No files found{filter !== 'all' ? ` (${filter})` : ''}
+              {lockedTo
+                ? `No files in ${lockedTo}`
+                : `No files found${filter !== 'all' ? ` (${filter})` : ''}`}
             </div>
           ) : (
-            groupFilesByFolder(files).map((group) => (
+            groupFilesByFolder(files).map((group, i) => (
               <SelectGroup key={group.dir || '__root__'}>
                 {group.dir !== '' && (
-                  <SelectLabel className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+                  <SelectLabel
+                    className={`flex items-center gap-1.5 text-xs font-semibold ${GROUP_COLORS[i % GROUP_COLORS.length]}`}
+                  >
                     <FolderOpen className="h-3 w-3" />
                     {group.dir}
                   </SelectLabel>
@@ -359,13 +402,18 @@ export default function OverrideDialog({
             <FileSelector
               label="Mmproj Path"
               folder={mmprojFolder || modelFolder}
-              files={mmprojFiles}
+              files={visibleMmprojFiles}
               value={selectedMmproj}
               onChange={setSelectedMmproj}
               filter={mmprojFilter}
               onFilterChange={setMmprojFilter}
               placeholder="Select a mmproj file..."
               noFolderMessage="Configure a model folder in Settings to enable mmproj selection."
+              lockedTo={
+                mmprojLockedToModel
+                  ? (modelFiles.find((f) => f.path === selectedModel)?.rel_dir ?? '')
+                  : undefined
+              }
             />
           </div>
         )}
