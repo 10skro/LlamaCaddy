@@ -18,7 +18,11 @@ impl SettingsManager {
             .remove("storage_path")
             .unwrap_or_default();
 
-        let theme = map.remove("theme").unwrap_or_else(|| "dark".to_string());
+        let mut theme = map.remove("theme").unwrap_or_else(|| "catppuccin-mocha".to_string());
+        // Migrate removed themes to the default one.
+        if theme == "rosepine-moon" || theme == "dark" {
+            theme = "catppuccin-mocha".to_string();
+        }
 
         let auto_check_str = map
             .remove("auto_check_updates")

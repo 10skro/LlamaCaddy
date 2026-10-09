@@ -362,7 +362,7 @@ export function VersionCard({ version, actions, dragHandleProps }: VersionCardPr
       {/* Override Badge */}
       {hasOverride && (
         <div className="px-3 pt-1.5 pb-1.5">
-          <Badge variant="outline" className="border-iris/30 text-iris text-xs gap-1 max-w-full">
+          <Badge variant="outline" className="border-mauve/30 text-mauve text-xs gap-1 max-w-full">
             <SlidersHorizontal className="h-3 w-3 shrink-0" />
             <div className="flex flex-wrap items-center gap-1 min-w-0 line-clamp-2">
               {overrideModelName && (
@@ -481,7 +481,7 @@ export function VersionCard({ version, actions, dragHandleProps }: VersionCardPr
             <Button
               variant="outline"
               size="sm"
-              className={`flex-1 gap-2 ${hasOverride ? 'border-iris/50 text-iris' : ''}`}
+              className={`flex-1 gap-2 ${hasOverride ? 'border-mauve/50 text-mauve' : ''}`}
               onClick={() => setOverrideDialogOpen(true)}
             >
               <SlidersHorizontal className="h-4 w-4" />

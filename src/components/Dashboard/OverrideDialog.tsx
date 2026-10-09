@@ -54,16 +54,17 @@ function parentDir(p: string): string {
   return p.replace(/[\\/]+[^\\/]*$/, '').toLowerCase();
 }
 
-/** Muted palette cycled per folder group: the header ROW gets a subtle
+/** Theme-aware palette cycled per folder group: the header ROW gets a subtle
  *  colored background band (separator between folders); its text stays
- *  neutral. Tailwind classes must be literal strings. */
+ *  neutral. Colors are theme CSS variables (defined in every theme), never
+ *  raw Tailwind palette colors. Tailwind classes must be literal strings. */
 const GROUP_COLORS = [
-  'bg-violet-500/15',
-  'bg-sky-500/15',
-  'bg-emerald-500/15',
-  'bg-amber-500/15',
-  'bg-rose-500/15',
-  'bg-cyan-500/15',
+  'bg-mauve/15',
+  'bg-sky/15',
+  'bg-green/15',
+  'bg-peach/15',
+  'bg-red/15',
+  'bg-teal/15',
 ];
 
 interface OverrideDialogProps {
@@ -243,9 +244,9 @@ export default function OverrideDialog({
     () => (ext: string) => {
       switch (ext) {
         case 'gguf':
-          return 'bg-violet-500/20 text-violet-300 border-violet-500/30';
+          return 'bg-mauve/20 text-mauve border-mauve/30';
         case 'safetensors':
-          return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
+          return 'bg-blue/20 text-blue border-blue/30';
         default:
           return 'bg-secondary text-muted-foreground border-border';
       }

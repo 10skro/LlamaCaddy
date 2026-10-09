@@ -29,13 +29,11 @@ export interface Theme {
 
 import { catppuccinMocha } from './catppuccin-mocha';
 import { rosepineDawn } from './rosepine-dawn';
-import { rosepineMoon } from './rosepine-moon';
 
 export { catppuccinMocha } from './catppuccin-mocha';
 export { rosepineDawn } from './rosepine-dawn';
-export { rosepineMoon } from './rosepine-moon';
 
-export const AVAILABLE_THEMES: Theme[] = [catppuccinMocha, rosepineDawn, rosepineMoon];
+export const AVAILABLE_THEMES: Theme[] = [catppuccinMocha, rosepineDawn];
 export const DEFAULT_THEME_ID = 'catppuccin-mocha';
 
 export function getThemeById(id: string): Theme | undefined {
