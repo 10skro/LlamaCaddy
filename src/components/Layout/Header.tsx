@@ -14,6 +14,7 @@ import { useAppUpdate } from '@/hooks/useAppUpdate';
 import { useServerCheck } from '@/hooks/useServerCheck';
 import { ChangelogModal } from '@/components/shared/ChangelogModal';
 import { ServerRunningWarningDialog } from '@/components/shared/ServerRunningWarningDialog';
+import { usePendingChangelog } from '@/hooks/usePendingChangelog';
 import { useState } from 'react';
 
 const pageTitles: Record<string, string> = {
@@ -28,6 +29,7 @@ export function Header() {
   const { newBuilds } = useAppStore();
   const { updateInfo, isInstalling, installUpdate } = useAppUpdate();
   const [changelogOpen, setChangelogOpen] = useState(false);
+  const { pending: pendingChangelog, dismiss: dismissPendingChangelog } = usePendingChangelog();
   const { showWarning, setShowWarning, stoppingServers, shouldShowWarning, killAllServers } =
     useServerCheck();
 
@@ -166,6 +168,14 @@ export function Header() {
         tagName={updateInfo.version ?? undefined}
         buildNumber={updateInfo.version ?? 'Update'}
         body={updateInfo.body ?? undefined}
+      />
+
+      {/* Changelog of an update that was just installed (shown once on next startup) */}
+      <ChangelogModal
+        open={pendingChangelog !== null}
+        onOpenChange={(open) => !open && dismissPendingChangelog()}
+        buildNumber={pendingChangelog?.version ?? 'Update'}
+        body={pendingChangelog?.body ?? ''}
       />
 
       {/* Warning dialog when servers are running */}
