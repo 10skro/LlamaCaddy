@@ -9,12 +9,6 @@ export function useTheme() {
   const initialMount = useRef(true);
 
   useEffect(() => {
-    console.log(
-      '[THEME-BOOT] ⑦ useTheme effect: activeTheme=',
-      activeTheme,
-      'initialMount=',
-      initialMount.current
-    );
     const theme = getThemeById(activeTheme);
     if (theme) {
       applyTheme(theme);
