@@ -2,7 +2,7 @@
 
 A modern Windows desktop application for managing [llama.cpp](https://github.com/ggerganov/llama.cpp) builds. Browse, download, configure, and run llama.cpp servers — all from a clean, intuitive interface.
 
-[![Version](https://img.shields.io/badge/version-0.9.1-blue.svg)](https://github.com/10skro/LlamaCaddy/releases)
+[![Version](https://img.shields.io/badge/version-0.9.2-blue.svg)](https://github.com/10skro/LlamaCaddy/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg?logo=windows)](https://www.microsoft.com/windows)
 

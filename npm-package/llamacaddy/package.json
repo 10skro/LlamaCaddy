@@ -1,6 +1,6 @@
 {
   "name": "llamacaddy",
-  "version": "0.9.0",
+  "version": "0.9.2",
   "description": "LlamaCaddy - browse, download, configure and run llama.cpp server builds on Windows. Launch with: llamacaddy",
   "license": "MIT",
   "repository": {

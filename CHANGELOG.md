@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## v0.9.2 — 2026-10-09
+
+### Interne
+- **Nettoyage des dépendances mortes** : suppression de paquets npm jamais importés (Radix avatar/scroll-area/tabs/tooltip, react-table, types react-color, wrappers JS des plugins Tauri) et des plugins Tauri inutilisés côté backend (shell, fs, http) avec leurs permissions de capacités. Le plugin dialog est conservé (sélecteur de dossier natif).
+- Désactivation de `withGlobalTauri` (inutilisé : l'interface importe l'API Tauri par npm).
+- READMEs alignés sur la distribution npm : `npx llamacaddy`, mise à jour via npm, lien vers le CHANGELOG.
+- Correction du versionnement : le `package.json` racine était resté à 0.8.0 — aligné avec le reste.
+
 ## v0.9.0 — 2026-10-09
 
 ### Nouveautés
