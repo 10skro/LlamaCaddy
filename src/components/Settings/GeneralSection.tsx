@@ -1,22 +1,29 @@
-import { Brain, AlertCircle, Check, FolderOpen } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { FolderCog, FolderOpen, Brain, HardDrive, AlertCircle, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 import type { AppSettings } from '@/types';
 import { useDebouncedFolderInput } from '@/hooks/Settings/useDebouncedFolderInput';
+import { getStoragePath, openStorageFolder } from '@/services/settings';
+import { useToast } from '@/hooks/use-toast';
 
-interface ModelsSectionProps {
+interface GeneralSectionProps {
   settings: AppSettings | null;
   updateSetting: <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => void;
 }
 
 /**
- * Models section — single model root folder configuration.
- * mmproj files are found inside the same root (sub-folders included);
- * the legacy mmproj_folder setting remains supported but is no longer exposed.
+ * General section — folder locations:
+ * - model root folder (editable, validated with debounce)
+ * - llama.cpp storage path (read-only, with an open-folder button)
  */
-export function ModelsSection({ settings, updateSetting }: ModelsSectionProps) {
+export function GeneralSection({ settings, updateSetting }: GeneralSectionProps) {
+  const { toast } = useToast();
+  const [storagePath, setStoragePath] = useState('');
+
   const modelInput = useDebouncedFolderInput({
     settings,
     settingKey: 'model_folder',
@@ -25,21 +32,40 @@ export function ModelsSection({ settings, updateSetting }: ModelsSectionProps) {
     scanDescription: 'Models and mmproj files will be scanned from this folder.',
   });
 
+  useEffect(() => {
+    getStoragePath()
+      .then(setStoragePath)
+      .catch((err) => console.error('Failed to load storage path:', err));
+  }, []);
+
+  const handleOpenFolder = async () => {
+    try {
+      await openStorageFolder();
+    } catch (err) {
+      toast({
+        title: 'Unable to open folder',
+        description: String(err),
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <Card className="border-border/50 bg-card/50">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Brain className="h-5 w-5" />
-          Models
+          <FolderCog className="h-5 w-5" />
+          Folders
         </CardTitle>
-        <CardDescription>
-          Configure the root folder where your model files are stored.
-        </CardDescription>
+        <CardDescription>Where your models and llama.cpp builds are stored.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Model Folder */}
         <div className="space-y-2">
-          <Label>Model Folder</Label>
+          <Label className="flex items-center gap-2">
+            <Brain className="h-3.5 w-3.5 text-muted-foreground" />
+            Model Folder
+          </Label>
           <div className="flex gap-2">
             <Input
               value={modelInput.value}
@@ -74,6 +100,31 @@ export function ModelsSection({ settings, updateSetting }: ModelsSectionProps) {
               Folder exists and is accessible.
             </p>
           )}
+        </div>
+
+        <Separator className="border-border/50" />
+
+        {/* Storage Path (read-only) */}
+        <div className="space-y-2">
+          <Label className="flex items-center gap-2">
+            <HardDrive className="h-3.5 w-3.5 text-muted-foreground" />
+            llama.cpp Storage Path
+          </Label>
+          <div className="flex gap-2">
+            <Input
+              value={storagePath}
+              readOnly
+              className="bg-background/50 font-mono text-sm cursor-default"
+            />
+            <Button
+              variant="outline"
+              size="icon"
+              title="Open storage folder"
+              onClick={handleOpenFolder}
+            >
+              <FolderOpen className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

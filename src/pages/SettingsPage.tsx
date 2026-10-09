@@ -4,11 +4,11 @@ import { useAppStore } from '@/store/useAppStore';
 import { useTheme } from '@/hooks/useTheme';
 import type { AppSettings } from '@/types';
 import {
-  StorageSection,
-  ModelsSection,
+  GeneralSection,
   AppearanceSection,
-  NotificationsSection,
-  AboutSection,
+  UpdatesSection,
+  SettingsNav,
+  type SettingsTab,
 } from '@/components/Settings';
 
 export function SettingsPage() {
@@ -16,6 +16,7 @@ export function SettingsPage() {
   const { activeTheme, setActiveTheme } = useTheme();
   const appUpdateLastChecked = useAppStore((s) => s.appUpdateLastChecked);
   const [appVersion, setAppVersion] = useState('...');
+  const [tab, setTab] = useState<SettingsTab>('general');
 
   // Load app version on mount
   useEffect(() => {
@@ -30,30 +31,37 @@ export function SettingsPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6 p-6 h-full overflow-auto">
-      <div className="max-w-3xl mx-auto w-full flex flex-col gap-6">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-          <p className="text-muted-foreground mt-1">Configure your LlamaCaddy preferences.</p>
-          <p className="text-xs text-muted-foreground mt-1">
-            Manage storage paths, appearance, and notifications.
-          </p>
-        </div>
+    <div className="flex h-full overflow-hidden">
+      <div className="flex w-full max-w-4xl mx-auto gap-6 p-6">
+        <SettingsNav active={tab} onSelect={setTab} appVersion={appVersion} />
 
-        <StorageSection />
-        <ModelsSection settings={settings} updateSetting={updateSetting} />
-        <AppearanceSection
-          settings={settings}
-          updateSetting={updateSetting}
-          activeTheme={activeTheme}
-          setActiveTheme={setActiveTheme}
-        />
-        <NotificationsSection
-          settings={settings}
-          updateSetting={updateSetting}
-          appUpdateLastChecked={appUpdateLastChecked}
-        />
-        <AboutSection appVersion={appVersion} />
+        <div className="flex-1 min-w-0 overflow-y-auto pr-1">
+          <div className="flex flex-col gap-6 pb-6">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
+              <p className="text-muted-foreground mt-1">Configure your LlamaCaddy preferences.</p>
+            </div>
+
+            {tab === 'general' && (
+              <GeneralSection settings={settings} updateSetting={updateSetting} />
+            )}
+            {tab === 'appearance' && (
+              <AppearanceSection
+                settings={settings}
+                updateSetting={updateSetting}
+                activeTheme={activeTheme}
+                setActiveTheme={setActiveTheme}
+              />
+            )}
+            {tab === 'updates' && (
+              <UpdatesSection
+                settings={settings}
+                updateSetting={updateSetting}
+                appUpdateLastChecked={appUpdateLastChecked}
+              />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
-export { StorageSection } from './StorageSection';
-export { ModelsSection } from './ModelsSection';
+export { GeneralSection } from './GeneralSection';
 export { AppearanceSection } from './AppearanceSection';
-export { NotificationsSection } from './NotificationsSection';
-export { AboutSection } from './AboutSection';
+export { UpdatesSection } from './UpdatesSection';
+export { SettingsNav, SETTINGS_TABS, type SettingsTab } from './SettingsNav';

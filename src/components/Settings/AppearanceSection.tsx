@@ -8,6 +8,12 @@ import { AVAILABLE_THEMES } from '@/themes';
 import { AVAILABLE_FONTS } from '@/fonts';
 import { useSettingsPersistence } from '@/hooks/Settings/useSettingsPersistence';
 
+const TOAST_DURATIONS = [
+  { label: '2s', value: 2000 },
+  { label: '3s', value: 3000 },
+  { label: '5s', value: 5000 },
+];
+
 interface AppearanceSectionProps {
   settings: AppSettings | null;
   updateSetting: <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => void;
@@ -92,6 +98,41 @@ export function AppearanceSection({
                 >
                   {isActive && <Check className="h-3.5 w-3.5 mr-1.5" />}
                   {font.name}
+                </Button>
+              );
+            })}
+          </div>
+        </div>
+
+        <Separator className="border-border/50" />
+
+        {/* Toast duration */}
+        <div className="flex items-center gap-4">
+          <div>
+            <Label>Toast notification duration</Label>
+            <p className="text-xs text-muted-foreground mt-1">
+              How long notification toasts remain visible.
+            </p>
+          </div>
+          <div className="flex gap-1.5" role="group" aria-label="Toast notification duration">
+            {TOAST_DURATIONS.map((opt) => {
+              const isActive = (settings?.toast_duration ?? 5000) === opt.value;
+              return (
+                <Button
+                  key={opt.value}
+                  variant={isActive ? 'default' : 'outline'}
+                  size="sm"
+                  className={
+                    isActive ? 'ring-2 ring-accent ring-offset-2 ring-offset-background' : ''
+                  }
+                  onClick={() =>
+                    persistSetting('toast_duration', opt.value, {
+                      title: 'Toast duration updated',
+                      description: `Notifications will stay visible for ${opt.label}.`,
+                    })
+                  }
+                >
+                  {opt.label}
                 </Button>
               );
             })}
