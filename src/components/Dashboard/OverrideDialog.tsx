@@ -423,11 +423,9 @@ export default function OverrideDialog({
         )}
 
         <DialogFooter className="gap-2 sm:gap-0">
-          {hasOverride && (
-            <Button variant="outline" onClick={handleReset} disabled={loading}>
-              Reset
-            </Button>
-          )}
+          <Button variant="outline" onClick={handleReset} disabled={loading || !hasOverride}>
+            Reset
+          </Button>
           <Button onClick={handleSave} disabled={loading || scanning}>
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save Override
