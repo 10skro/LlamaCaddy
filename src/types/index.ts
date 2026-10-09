@@ -89,6 +89,8 @@ export interface ModelFile {
   path: string;
   name: string;
   size: number;
+  /** Sub-folder (relative to the scanned root) containing the file; '' when at root. */
+  rel_dir: string;
 }
 
 // Card customization for dashboard version cards

@@ -1,6 +1,6 @@
 [package]
 name = "llamacaddy"
-version = "0.9.2"
+version = "0.9.3"
 description = "LlamaCaddy - browse, download, configure and run llama.cpp server builds"
 authors = ["openfox"]
 edition = "2021"

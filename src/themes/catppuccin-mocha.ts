@@ -60,8 +60,8 @@ export const catppuccinMocha: Theme = {
     '--accent-foreground': '0 0% 15%',
     '--destructive': hexToHSL(catppuccinMochaColors.red),
     '--destructive-foreground': '0 0% 15%',
-    '--border': hexToHSL(catppuccinMochaColors.surface0),
-    '--input': hexToHSL(catppuccinMochaColors.crust),
+    '--border': '234 14% 27%', // #3b3d4f — between surface0 and surface1: visible outlines, not harsh
+    '--input': '234 14% 27%',
     '--ring': hexToHSL(catppuccinMochaColors.blue),
     '--sidebar': hexToHSL(catppuccinMochaColors.crust),
     // Catppuccin native colors as CSS variables

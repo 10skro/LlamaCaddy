@@ -96,6 +96,11 @@ pub struct ModelFile {
     pub path: String,
     pub name: String,
     pub size: u64,
+    /// Sub-directory (relative to the scanned root) containing this file.
+    /// Empty string when the file sits directly in the root folder.
+    /// Lets the UI group same-named files (e.g. several `mmproj-F16.gguf`)
+    /// by their parent folder.
+    pub rel_dir: String,
 }
 
 /// Favorite build record

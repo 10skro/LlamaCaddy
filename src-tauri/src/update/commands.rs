@@ -146,18 +146,14 @@ pub async fn install_app_update(
     let terminal = app.state::<TerminalManager>();
     terminal.kill_all();
 
-    // Open a visible terminal running the npm update, then close the app so
-    // Windows releases the lock on the running executable.
+    // Open a visible terminal that: waits for this app to exit (releasing the
+    // lock on the executable), runs the npm update, then relaunches the app
+    // and closes itself. On failure the terminal stays open to show the error.
+    let script = format!(
+        "timeout /t 3 /nobreak >nul & npm install -g {NPM_PACKAGE}@latest && (echo. && echo Mise a jour terminee, relance de {NPM_PACKAGE}... && start \"\" {NPM_PACKAGE}) || (echo. && echo Echec de la mise a jour npm. && pause)"
+    );
     let mut cmd = Command::new("cmd");
-    cmd.args([
-        "/C",
-        "start",
-        "cmd",
-        "/K",
-        &format!(
-            "npm install -g {NPM_PACKAGE}@latest && echo. && echo Mise a jour terminee. Fermez cette fenetre puis relancez {NPM_PACKAGE}."
-        ),
-    ]);
+    cmd.args(["/C", "start", "cmd", "/C", &script]);
     cmd.spawn()
         .map_err(|e| format!("Update launch failed: {}", e))?;
 
