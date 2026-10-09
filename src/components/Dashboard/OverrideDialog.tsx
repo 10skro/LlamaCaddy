@@ -54,18 +54,9 @@ function parentDir(p: string): string {
   return p.replace(/[\\/]+[^\\/]*$/, '').toLowerCase();
 }
 
-/** Theme-aware palette cycled per folder group: the header ROW gets a subtle
- *  colored background band (separator between folders); its text stays
- *  neutral. Colors are theme CSS variables (defined in every theme), never
- *  raw Tailwind palette colors. Tailwind classes must be literal strings. */
-const GROUP_COLORS = [
-  'bg-mauve/15',
-  'bg-sky/15',
-  'bg-green/15',
-  'bg-peach/15',
-  'bg-red/15',
-  'bg-teal/15',
-];
+/** Neutral band on the header ROW of each folder group — a separator between
+ *  folders, no color cycling. Text stays neutral too. */
+const GROUP_BAND = 'bg-secondary';
 
 interface OverrideDialogProps {
   open: boolean;
@@ -244,9 +235,7 @@ export default function OverrideDialog({
     () => (ext: string) => {
       switch (ext) {
         case 'gguf':
-          return 'bg-mauve/20 text-mauve border-mauve/30';
         case 'safetensors':
-          return 'bg-blue/20 text-blue border-blue/30';
         default:
           return 'bg-secondary text-muted-foreground border-border';
       }
@@ -333,13 +322,12 @@ export default function OverrideDialog({
             </div>
           ) : (
             groupFilesByFolder(files).map((group, i) => {
-              const headerColor = GROUP_COLORS[i % GROUP_COLORS.length];
               const rootName = folder ? folder.replace(/[\\/]+$/, '').split(/[\\/]/).pop() : '';
               const headerLabel = group.dir !== '' ? group.dir : `${rootName} (root)`;
               return (
               <SelectGroup key={group.dir || '__root__'}>
                 <SelectLabel
-                  className={`flex items-center gap-1.5 text-xs font-semibold text-foreground rounded-sm px-1.5 py-1 ${headerColor} ${i > 0 ? 'mt-1' : ''}`}
+                  className={`flex items-center gap-1.5 text-xs font-semibold text-foreground rounded-sm px-1.5 py-1 ${GROUP_BAND} ${i > 0 ? 'mt-1' : ''}`}
                 >
                   <FolderOpen className="h-3 w-3" />
                   {headerLabel}
