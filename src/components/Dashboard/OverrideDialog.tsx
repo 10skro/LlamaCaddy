@@ -55,14 +55,15 @@ function parentDir(p: string): string {
 }
 
 /** Muted palette cycled per folder group so adjacent groups are visually
- *  distinct without being loud. Tailwind classes must be literal strings. */
+ *  distinct without being loud: colored header + matching left accent on the
+ *  group's rows. Tailwind classes must be literal strings. */
 const GROUP_COLORS = [
-  'text-violet-300',
-  'text-sky-300',
-  'text-emerald-300',
-  'text-amber-300',
-  'text-rose-300',
-  'text-cyan-300',
+  { header: 'text-violet-300', row: 'border-l-2 border-l-violet-400/60' },
+  { header: 'text-sky-300', row: 'border-l-2 border-l-sky-400/60' },
+  { header: 'text-emerald-300', row: 'border-l-2 border-l-emerald-400/60' },
+  { header: 'text-amber-300', row: 'border-l-2 border-l-amber-400/60' },
+  { header: 'text-rose-300', row: 'border-l-2 border-l-rose-400/60' },
+  { header: 'text-cyan-300', row: 'border-l-2 border-l-cyan-400/60' },
 ];
 
 interface OverrideDialogProps {
@@ -330,11 +331,13 @@ export default function OverrideDialog({
                 : `No files found${filter !== 'all' ? ` (${filter})` : ''}`}
             </div>
           ) : (
-            groupFilesByFolder(files).map((group, i) => (
+            groupFilesByFolder(files).map((group, i) => {
+              const color = GROUP_COLORS[i % GROUP_COLORS.length];
+              return (
               <SelectGroup key={group.dir || '__root__'}>
                 {group.dir !== '' && (
                   <SelectLabel
-                    className={`flex items-center gap-1.5 text-xs font-semibold ${GROUP_COLORS[i % GROUP_COLORS.length]}`}
+                    className={`flex items-center gap-1.5 text-xs font-semibold ${color.header}`}
                   >
                     <FolderOpen className="h-3 w-3" />
                     {group.dir}
@@ -344,7 +347,7 @@ export default function OverrideDialog({
                   <SelectItem
                     key={file.path}
                     value={file.path}
-                    className="hover:bg-item-highlight/15 focus:bg-item-highlight/15 text-foreground"
+                    className={`hover:bg-item-highlight/15 focus:bg-item-highlight/15 text-foreground ${group.dir !== '' ? color.row : ''}`}
                   >
                     <div className="flex items-center gap-2 max-w-full">
                       <span className="truncate flex-1" title={file.path}>
@@ -360,7 +363,8 @@ export default function OverrideDialog({
                   </SelectItem>
                 ))}
               </SelectGroup>
-            ))
+              );
+            })
           )}
         </SelectContent>
       </Select>
