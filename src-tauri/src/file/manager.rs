@@ -95,7 +95,9 @@ impl FileManager {
                     AppError::Extraction(format!("Failed to read entry {}: {}", i, e))
                 })?;
 
-                let outpath_name = file.mangled_name();
+                let outpath_name = file.mangled_name().map_err(|e| {
+                    AppError::Extraction(format!("Failed to resolve entry name {}: {}", i, e))
+                })?;
                 let outpath = outpath_name.as_path();
 
                 // Skip directory entries (they'll be created automatically)
