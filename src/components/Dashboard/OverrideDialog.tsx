@@ -12,12 +12,14 @@ import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Settings2, Filter } from 'lucide-react';
+import { FolderOpen, Loader2, Settings2, Filter } from 'lucide-react';
 import {
   deleteVersionOverride,
   saveVersionOverride,
@@ -32,6 +34,25 @@ const EXTENSION_FILTERS: { value: FileExtensionFilter; label: string; ext: strin
   { value: 'gguf', label: '.gguf', ext: 'gguf' },
   { value: 'safetensors', label: '.safetensors', ext: 'safetensors' },
 ];
+
+/** Group scanned files by their sub-folder (rel_dir) for readable display.
+ *  Files with the same name in different folders become distinguishable. */
+function groupFilesByFolder(files: ModelFile[]): { dir: string; files: ModelFile[] }[] {
+  const map = new Map<string, ModelFile[]>();
+  for (const f of files) {
+    const list = map.get(f.rel_dir) ?? [];
+    list.push(f);
+    map.set(f.rel_dir, list);
+  }
+  return [...map.entries()]
+    .map(([dir, list]) => ({ dir, files: list }))
+    .sort((a, b) => (a.dir === '' ? -1 : b.dir === '' ? 1 : a.dir.localeCompare(b.dir)));
+}
+
+/** Normalize a Windows path for parent-folder comparison. */
+function parentDir(p: string): string {
+  return p.replace(/[\\/]+[^\\/]*$/, '').toLowerCase();
+}
 
 interface OverrideDialogProps {
   open: boolean;
@@ -95,7 +116,9 @@ export default function OverrideDialog({
 
     Promise.all([
       scanFiles(modelFolder, modelFilter, setModelFiles, 'model'),
-      scanFiles(mmprojFolder, mmprojFilter, setMmprojFiles, 'mmproj'),
+      // mmproj scan falls back to the model folder: the recommended layout is
+      // one folder per model with its mmproj inside.
+      scanFiles(mmprojFolder || modelFolder, mmprojFilter, setMmprojFiles, 'mmproj'),
     ]).finally(() => {
       if (mounted) setScanning(false);
     });
@@ -115,6 +138,22 @@ export default function OverrideDialog({
       setSelectedMmproj('');
     }
   }, [open, currentOverride]);
+
+  const handleModelChange = useCallback(
+    (path: string) => {
+      setSelectedModel(path);
+      // Suggest the mmproj sitting in the same folder as the chosen model,
+      // unless the user already picked one.
+      if (path && !selectedMmproj) {
+        const parent = parentDir(path);
+        const siblings = mmprojFiles.filter((f) => parentDir(f.path) === parent);
+        if (siblings.length === 1) {
+          setSelectedMmproj(siblings[0].path);
+        }
+      }
+    },
+    [selectedMmproj, mmprojFiles]
+  );
 
   const handleSave = useCallback(async () => {
     setLoading(true);
@@ -250,24 +289,34 @@ export default function OverrideDialog({
               No files found{filter !== 'all' ? ` (${filter})` : ''}
             </div>
           ) : (
-            files.map((file) => (
-              <SelectItem
-                key={file.path}
-                value={file.path}
-                className="hover:bg-item-highlight/15 focus:bg-item-highlight/15 text-foreground"
-              >
-                <div className="flex items-center gap-2 max-w-full">
-                  <span className="truncate flex-1" title={file.path}>
-                    {file.name}
-                  </span>
-                  <Badge
-                    variant="outline"
-                    className={`text-[10px] h-5 px-1.5 shrink-0 ${extBadgeColor(getFileExt(file.name))}`}
+            groupFilesByFolder(files).map((group) => (
+              <SelectGroup key={group.dir || '__root__'}>
+                {group.dir !== '' && (
+                  <SelectLabel className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+                    <FolderOpen className="h-3 w-3" />
+                    {group.dir}
+                  </SelectLabel>
+                )}
+                {group.files.map((file) => (
+                  <SelectItem
+                    key={file.path}
+                    value={file.path}
+                    className="hover:bg-item-highlight/15 focus:bg-item-highlight/15 text-foreground"
                   >
-                    {getFileExt(file.name)}
-                  </Badge>
-                </div>
-              </SelectItem>
+                    <div className="flex items-center gap-2 max-w-full">
+                      <span className="truncate flex-1" title={file.path}>
+                        {file.name}
+                      </span>
+                      <Badge
+                        variant="outline"
+                        className={`text-[10px] h-5 px-1.5 shrink-0 ${extBadgeColor(getFileExt(file.name))}`}
+                      >
+                        {getFileExt(file.name)}
+                      </Badge>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             ))
           )}
         </SelectContent>
@@ -301,7 +350,7 @@ export default function OverrideDialog({
               folder={modelFolder}
               files={modelFiles}
               value={selectedModel}
-              onChange={setSelectedModel}
+              onChange={handleModelChange}
               filter={modelFilter}
               onFilterChange={setModelFilter}
               placeholder="Select a model file..."
@@ -309,7 +358,7 @@ export default function OverrideDialog({
             />
             <FileSelector
               label="Mmproj Path"
-              folder={mmprojFolder}
+              folder={mmprojFolder || modelFolder}
               files={mmprojFiles}
               value={selectedMmproj}
               onChange={setSelectedMmproj}
