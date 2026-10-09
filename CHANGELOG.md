@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.9.4 — 2026-10-09
+
+### New
+- **Settings redesigned**: the page now uses a side navigation (General / Appearance / Updates) instead of one long scroll. Model folder and storage settings are merged into a single General card; theme and toast duration live under Appearance; the app version shows in a footer instead of an About card.
+- **Storage path visible**: the llama.cpp storage folder is displayed (read-only, with copy and open-folder buttons) — it is fixed by llama.cpp and was never actually editable.
+
+### Removed
+- **Advanced / Power Users section** (GitHub token for rate limits): never used, fully removed along with its backend plumbing.
+- **Change-storage-path pipeline (WIP)**: abandoned — the folder is llama.cpp's own data directory and moving it was not viable.
+
+### Internal
+- Console cleanup: removed the THEME-BOOT startup diagnostics (flash issue long solved) and silenced React Router v7 deprecation warnings by enabling the future flags; lint now reports 0 problems (formatting auto-fixed).
+
 ## v0.9.3 — 2026-10-09
 
 ### New
